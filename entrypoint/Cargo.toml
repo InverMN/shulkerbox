@@ -9,3 +9,4 @@ edition = "2018"
 [dependencies]
 cli = { path = "../cli" }
 tokio = { version = "*", features = ["full"] }
+common = { path = "../common" }

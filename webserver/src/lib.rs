@@ -10,6 +10,11 @@ fn index() -> &'static str {
     "GUI will be served here!"
 }
 
+#[get("/api/v1/server/status")]
+fn server_status() -> &'static str {
+    "OK"
+}
+
 #[get("/api/v1/server/stop")]
 fn server_stop() -> &'static str {
     use std::{thread::{sleep, spawn}, time::Duration};
@@ -30,5 +35,5 @@ fn config() -> String {
 pub async fn start() {
     let mut server_config = Config::default();
     server_config.log_level = LogLevel::Off;
-    rocket::build().configure(server_config).mount("/", routes![index, server_stop, config]).launch().await.unwrap();
+    rocket::build().configure(server_config).mount("/", routes![index, server_stop, config, server_status]).launch().await.unwrap();
 }
