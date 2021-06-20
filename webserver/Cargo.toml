@@ -8,3 +8,5 @@ edition = "2018"
 
 [dependencies]
 rocket = "0.5.0-rc.1"
+serde_json = "*"
+common = { path = "../common" }

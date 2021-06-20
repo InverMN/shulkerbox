@@ -1,5 +1,8 @@
 use std::process::exit;
 
+use common::{read_config};
+use rocket::{config::Config, log::LogLevel, response::{content, status}};
+
 #[macro_use] extern crate rocket;
 
 #[get("/")]
@@ -12,6 +15,13 @@ fn server_stop() {
     exit(0);
 }
 
+#[get("/api/v1/config")]
+fn config() -> String {
+    serde_json::to_string(&read_config()).unwrap()
+}
+
 pub async fn start() {
-    rocket::build().mount("/", routes![index, server_stop]).launch().await.unwrap();
+    let mut server_config = Config::default();
+    server_config.log_level = LogLevel::Off;
+    rocket::build().mount("/", routes![index, server_stop, config]).launch().await.unwrap();
 }
