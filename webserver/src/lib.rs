@@ -1,7 +1,7 @@
 use std::{process::exit, };
 
 use common::{read_config};
-use rocket::{config::Config, log::LogLevel, response::{content, status}};
+use rocket::{config::Config, log::LogLevel};
 
 #[macro_use] extern crate rocket;
 

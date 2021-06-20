@@ -1,4 +1,4 @@
-use std::{net::TcpListener, time::Duration};
+use std::time::Duration;
 
 use clap::{Clap, AppSettings};
 use common::run_webserver_process;
