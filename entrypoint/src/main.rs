@@ -2,12 +2,10 @@ use std::env::{self, current_exe};
 
 #[tokio::main]
 async fn main() {
-    if env::args().into_iter().skip(1).collect::<Vec<String>>().join(" ") == "webserver start" {
-        webserver::start().await;
-    } else if env::args().len() == 1 { 
+    if env::args().len() == 1 { 
         run_webserver_process();
     } else {
-        cli::execute();
+        cli::execute().await;
     };
 }
 

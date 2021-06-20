@@ -8,5 +8,4 @@ edition = "2018"
 
 [dependencies]
 cli = { path = "../cli" }
-webserver = { path = "../webserver" }
 tokio = { version = "*", features = ["full"] }

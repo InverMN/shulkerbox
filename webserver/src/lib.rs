@@ -1,4 +1,4 @@
-use std::process::exit;
+use std::{process::exit, };
 
 use common::{read_config};
 use rocket::{config::Config, log::LogLevel, response::{content, status}};
@@ -11,8 +11,15 @@ fn index() -> &'static str {
 }
 
 #[get("/api/v1/server/stop")]
-fn server_stop() {
-    exit(0);
+fn server_stop() -> &'static str {
+    use std::{thread::{sleep, spawn}, time::Duration};
+    spawn(|| {
+        sleep(Duration::from_millis(100));
+        println!("Shutting server");
+        exit(0);
+    });
+    println!("Recieved exit server route");
+    "OK"
 }
 
 #[get("/api/v1/config")]
@@ -23,5 +30,5 @@ fn config() -> String {
 pub async fn start() {
     let mut server_config = Config::default();
     server_config.log_level = LogLevel::Off;
-    rocket::build().mount("/", routes![index, server_stop, config]).launch().await.unwrap();
+    rocket::build().configure(server_config).mount("/", routes![index, server_stop, config]).launch().await.unwrap();
 }
