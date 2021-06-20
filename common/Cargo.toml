@@ -9,3 +9,4 @@ edition = "2018"
 [dependencies]
 serde = "*"
 confy = "0.4.0"
+log = "*"

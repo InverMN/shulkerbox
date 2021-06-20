@@ -1,4 +1,5 @@
 pub mod config;
+pub mod files;
 pub use config::{Config, read_config};
 
 pub fn run_webserver_process() {

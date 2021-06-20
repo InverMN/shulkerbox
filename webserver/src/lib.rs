@@ -32,8 +32,14 @@ fn config() -> String {
     serde_json::to_string(&read_config()).unwrap()
 }
 
+#[get("/api/v1/files/mantain")]
+fn mantain_files() -> &'static str {
+    common::files::mantain_file_structure().unwrap();
+    "OK"
+}
+
 pub async fn start() {
     let mut server_config = Config::default();
     server_config.log_level = LogLevel::Off;
-    rocket::build().configure(server_config).mount("/", routes![index, server_stop, config, server_status]).launch().await.unwrap();
+    rocket::build().configure(server_config).mount("/", routes![index, server_stop, config, server_status, mantain_files]).launch().await.unwrap();
 }
