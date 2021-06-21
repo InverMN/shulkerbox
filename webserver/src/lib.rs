@@ -10,12 +10,12 @@ fn index() -> &'static str {
     "GUI will be served here!"
 }
 
-#[get("/api/v1/server/status")]
+#[get("/api/v1/service/status")]
 fn server_status() -> &'static str {
     "OK"
 }
 
-#[get("/api/v1/server/stop")]
+#[get("/api/v1/service/stop")]
 fn server_stop() -> &'static str {
     use std::{thread::{sleep, spawn}, time::Duration};
     spawn(|| {
@@ -38,8 +38,14 @@ fn mantain_files() -> &'static str {
     "OK"
 }
 
+#[get("/api/v1/server/create")]
+fn create_server() -> &'static str {
+    common::server::create();
+    "Created"
+}
+
 pub async fn start() {
     let mut server_config = Config::default();
     server_config.log_level = LogLevel::Off;
-    rocket::build().configure(server_config).mount("/", routes![index, server_stop, config, server_status, mantain_files]).launch().await.unwrap();
+    rocket::build().configure(server_config).mount("/", routes![index, server_stop, config, server_status, mantain_files, create_server]).launch().await.unwrap();
 }

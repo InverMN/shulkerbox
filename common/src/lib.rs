@@ -1,6 +1,7 @@
 pub mod config;
 pub mod files;
 pub use config::{Config, read_config};
+pub mod server;
 
 pub fn run_webserver_process() {
     use std::{process::{Command, exit, Stdio}, env::current_exe};

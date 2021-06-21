@@ -29,40 +29,40 @@ pub async fn execute() {
 
     match command.subcommand {
         Subcommand::Start => {
-            let response = ureq::get("http://localhost:8000/api/v1/server/status").timeout(Duration::from_secs(2)).call();
+            let response = ureq::get("http://localhost:8000/api/v1/service/status").timeout(Duration::from_secs(2)).call();
             match response {
                 Ok(_) => {
                     println!("Shulker is already running at port 8000");
                 },
                 Err(_) => {
-                    run_webserver_process();
                     println!("Shulker has started on port 8000");
+                    run_webserver_process();
                 },
             };
         },
         Subcommand::Stop => { 
-            ureq::get("http://localhost:8000/api/v1/server/stop").call().unwrap();
+            ureq::get("http://localhost:8000/api/v1/service/stop").call().unwrap();
             println!("Shulker has stopped");
         },
         Subcommand::Webserver(webserver) => {
             match webserver {
                 Webserver::Start => { 
-                    let response = ureq::get("http://localhost:8000/api/v1/server/status").timeout(Duration::from_secs(2)).call();
+                    let response = ureq::get("http://localhost:8000/api/v1/service/status").timeout(Duration::from_secs(2)).call();
                     match response {
                         Ok(_) => {
                             println!("Shulker is already running at port 8000");
                         },
                         Err(_) => {
-                            webserver::start().await;
                             println!("Shulker has started on port 8000");
+                            webserver::start().await;
                         },
                     };
                 },
                 Webserver::Stop => { 
-                    let response = ureq::get("http://localhost:8000/api/v1/server/status").timeout(Duration::from_secs(2)).call();
+                    let response = ureq::get("http://localhost:8000/api/v1/service/status").timeout(Duration::from_secs(2)).call();
                     match response {
                         Ok(_) => {
-                            ureq::get("http://localhost:8000/api/v1/server/stop").call().unwrap();
+                            ureq::get("http://localhost:8000/api/v1/service/stop").call().unwrap();
                             println!("Server has stopped.");
                         },
                         Err(_) => {

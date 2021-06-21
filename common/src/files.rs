@@ -3,7 +3,9 @@ use std::fs::*;
 use std::io::Result;
 use crate::copy_file;
 
-pub const APP_DIRECTORY: &str = &format!("{}/.shulkerbox", var("HOME").unwrap());
+pub fn app_directory() -> String {
+    format!("{}/.shulkerbox", var("HOME").unwrap())
+}
 
 pub fn mantain_file_structure() -> Result<()> {
     create_dirs("servers")?;
@@ -16,7 +18,7 @@ pub fn mantain_file_structure() -> Result<()> {
 }
 
 pub fn create_dirs(relative_path: &str) -> Result<()> {
-    create_dir_all(format!("{}/{}", APP_DIRECTORY, relative_path))?;
+    create_dir_all(format!("{}/{}", app_directory(), relative_path))?;
     Ok(())
 }
 
@@ -27,7 +29,7 @@ macro_rules! copy_file {
             Ok(_) => Ok(()),
             Err(_) => {
                 let content = include_str!($source_path);
-                ::std::fs::write(format!("{}/{}", APP_DIRECTORY, $target_path), content)?;
+                ::std::fs::write(format!("{}/{}", app_directory(), $target_path), content)?;
                 Ok(())
             },
         };
