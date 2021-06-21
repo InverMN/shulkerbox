@@ -4,18 +4,18 @@ use std::io::Result;
 use crate::copy_file;
 
 pub fn mantain_file_structure() -> Result<()> {
-    create_dirs(".shulkerbox/servers")?;
-    create_dirs(".shulkerbox/installers")?;
-    create_dirs(".shulkerbox/defaults")?;
+    create_dirs("servers")?;
+    create_dirs("installers")?;
+    create_dirs("defaults")?;
     copy_file!("../../resources/eula.txt", ".shulkerbox/defaults/eula.txt");
     copy_file!("../../resources/server.properties", ".shulkerbox/defaults/server.properties");
 
     Ok(())
 }
 
-fn create_dirs(relative_path: &str) -> Result<()> {
+pub fn create_dirs(relative_path: &str) -> Result<()> {
     let home_path = var("HOME").unwrap(); 
-    create_dir_all(format!("{}/{}", home_path, relative_path))?;
+    create_dir_all(format!("{}/.shulkerbox/{}", home_path, relative_path))?;
     Ok(())
 }
 
