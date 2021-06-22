@@ -1,4 +1,5 @@
 mod state;
+mod config;
 
 use std::{process::exit, };
 
@@ -6,7 +7,7 @@ use common::{read_config};
 use rocket::{State, config::Config, log::LogLevel};
 use state::HitCount;
 
-use crate::state::InitStateExt;
+use crate::{config::AppConfigExt, state::InitStateExt};
 
 #[macro_use] extern crate rocket;
 
@@ -33,7 +34,7 @@ fn server_stop() -> &'static str {
 }
 
 #[get("/api/v1/config")]
-fn config() -> String {
+fn get_config() -> String {
     serde_json::to_string(&read_config()).unwrap()
 }
 
@@ -62,12 +63,10 @@ fn hit_count(hit_count: &State<HitCount>) -> String {
 }
 
 pub async fn start() {
-    let mut server_config = Config::default();
-    server_config.log_level = LogLevel::Off;
     rocket::build()
         .init_app_state()
-        .configure(server_config)
-        .mount("/", routes![index, server_stop, config, server_status, mantain_files, create_server, hit_count, hit])
+        .impl_app_config()
+        .mount("/", routes![index, server_stop, get_config, server_status, mantain_files, create_server, hit_count, hit])
         .launch()
         .await
         .unwrap();
