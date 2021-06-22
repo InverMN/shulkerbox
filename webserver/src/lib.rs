@@ -1,7 +1,12 @@
+mod state;
+
 use std::{process::exit, };
 
 use common::{read_config};
-use rocket::{config::Config, log::LogLevel};
+use rocket::{State, config::Config, log::LogLevel};
+use state::HitCount;
+
+use crate::state::InitStateExt;
 
 #[macro_use] extern crate rocket;
 
@@ -44,8 +49,26 @@ fn create_server() -> &'static str {
     "Created"
 }
 
+#[get("/api/v1/hit")]
+fn hit(hit_count: &State<HitCount>) -> &'static str {
+    hit_count.increment();
+    "OK"
+}
+
+
+#[get("/api/v1/hit/count")]
+fn hit_count(hit_count: &State<HitCount>) -> String {
+    hit_count.get()
+}
+
 pub async fn start() {
     let mut server_config = Config::default();
     server_config.log_level = LogLevel::Off;
-    rocket::build().configure(server_config).mount("/", routes![index, server_stop, config, server_status, mantain_files, create_server]).launch().await.unwrap();
+    rocket::build()
+        .init_app_state()
+        .configure(server_config)
+        .mount("/", routes![index, server_stop, config, server_status, mantain_files, create_server, hit_count, hit])
+        .launch()
+        .await
+        .unwrap();
 }
