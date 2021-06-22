@@ -1,5 +1,4 @@
 use std::sync::atomic::AtomicUsize;
-
 use rocket::{Build, Rocket};
 
 pub trait InitStateExt {
