@@ -1,7 +1,6 @@
 use std::{convert::TryInto, fs::{copy, create_dir_all}, io::Result, path::Path, process::Command, thread};
 
 use downloader::{Download, Downloader};
-use log::debug;
 use nanoid::nanoid;
 
 use crate::files::{mantain_file_structure, app_directory};
